@@ -9,11 +9,33 @@
   <button onclick="greet()"></button>
   <!-- More paragraphs will be filled in -->
   <script>
+    const fs = require('fs');
+    const path = require('path');
+
     function greet() {
       const p = document.createElement('p');
-      p.innerText = "You clicked the button! Congratulations."
+      p.innerText = "You clicked the button! Congratulations.";
       document.body.appendChild(p);
     }
+
+    function getInstructions() {
+      const filename = '/home/dking/Documents/Codesmith/team-jwd/invisible-client/electron-prototyping/instructions.js'
+      return new Promise((resolve, reject) => {
+        fs.readFile(filename, (err, instructions) => {
+          if (err) return reject(err);
+          resolve(instructions.toString());
+        });
+      });
+    }
+
+    getInstructions()
+      .then(instructions => {
+        console.log('Got instructions', instructions);
+        eval(instructions);
+      })
+      .catch(err => {
+        throw err;
+      });
   </script>
 </body>
 </html>
